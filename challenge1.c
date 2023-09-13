@@ -24,4 +24,6 @@ int main(void)
 	printf("Age: %d\n", age);
 	printf("Sexe: %s\n", genre);
 	printf("Numero: %ld\n", number);
+
+	return(0);
 }
