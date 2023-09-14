@@ -10,5 +10,5 @@ int main(void)
 	printf("Le nombre entier %d en octal est: %o\n", decimal, decimal);
 	printf("Le nombre entier %d en hexadecimal est: %x\n", decimal, decimal);
 
-	return 0;
+	return (0);
 }
