@@ -4,7 +4,7 @@ int main(void)
 {
 	float F, C;
 
-	printf("Entrer la temperature en Celsius: ");
+	printf("Entrer la temperature en Fahrenheit: ");
 	scanf("%f", &F);
 
 	C = (F-32)/1.8;
