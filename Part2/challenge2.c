@@ -15,23 +15,11 @@ int main(void)
 			
 		switch (lettre) {
 			case 'a':
-				printf("La lettre est une voyelle\n");
-				break;
 			case 'e':
-				printf("La lettre est une voyelle\n");
-				break;
 			case 'i':
-				printf("La lettre est une voyelle\n");
-				break;
 			case 'o':
-				printf("La lettre est une voyelle\n");
-				break;
 			case 'u':
-				printf("La lettre est une voyelle\n");
-				break;
 			case 'y':
-				printf("La lettre est une voyelle\n");
-				break;
 			default:
 				printf("La lettre n'est pas une voyelle\n");
 		}
