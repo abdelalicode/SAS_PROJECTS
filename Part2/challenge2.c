@@ -9,6 +9,10 @@ int main(void)
 
 	if ((lettre >= 65 && lettre <= 90) || (lettre >= 97 && lettre <= 122))
 	{
+		if (lettre >= 65 && lettre <= 90)
+			lettre = lettre + 32;
+
+			
 		switch (lettre) {
 			case 'a':
 				printf("La lettre est une voyelle\n");
@@ -28,24 +32,6 @@ int main(void)
 			case 'y':
 				printf("La lettre est une voyelle\n");
 				break;
-			/** case 'A':
-				printf("La lettre est une voyelle\n");
-				break;
-			case 'E':
-				printf("La lettre est une voyelle\n");
-				break;
-			case 'I':
-				printf("La lettre est une voyelle\n");
-				break;
-			case 'O':
-				printf("La lettre est une voyelle\n");
-				break;
-			case 'U':
-				printf("La lettre est une voyelle\n");
-				break;
-			case 'Y':
-				printf("La lettre est une voyelle\n");
-				break; */
 			default:
 				printf("La lettre n'est pas une voyelle\n");
 		}
