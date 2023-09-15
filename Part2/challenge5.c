@@ -48,23 +48,23 @@ int main(void)
 	{	
 		secs = (long long)an * 365 * 24 * 60 * 60;
 
-			switch (choix) {
-				case 1:
-					printf("les mois equivalents: %d mois\n" , an * 12);
-					break;
-				case 2:
-					printf("les jours equivalents: %d jours\n", an * 365);
-					break;
-				case 3:
-					printf("les heures equivalents: %d heures\n", an * 365 * 24);
-					break;
-				case 4:
-					printf("les minutes equivalents: %d minutes\n", an * 365 * 24 * 60);
-					break;
-				case 5:
-					printf("les secondes des equivalents: %lld secondes\n", secs);
-					break;
-				default:
+		switch (choix) {
+			case 1:
+				printf("les mois equivalents: %d mois\n" , an * 12);
+				break;
+			case 2:
+				printf("les jours equivalents: %d jours\n", an * 365);
+				break;
+			case 3:
+				printf("les heures equivalents: %d heures\n", an * 365 * 24);
+				break;
+			case 4:
+				printf("les minutes equivalents: %d minutes\n", an * 365 * 24 * 60);
+				break;
+			case 5:
+				printf("les secondes des equivalents: %lld secondes\n", secs);
+				break;
+			default:
 				printf("Choix entré invalable\n");
 			}
 	}
