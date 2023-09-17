@@ -20,6 +20,8 @@ int main(void)
 			case 'o':
 			case 'u':
 			case 'y':
+				printf("La lettre est une voyelle\n");
+				break;
 			default:
 				printf("La lettre n'est pas une voyelle\n");
 		}
