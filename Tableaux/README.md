@@ -13,7 +13,7 @@ On appelle tableau une variable composée de données de même type, stockée de
 Challenges:
 -----------
 
-Challenge 1:
+**Challenge 1** :
 Déclarer un tableau d'entiers de 10 éléments et l'initialiser avec les nombres 1 à 10.
 
 Afficher le tableau en séparant les valeurs par des virgules.
