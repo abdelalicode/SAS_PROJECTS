@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 typedef struct
 {
@@ -21,10 +22,10 @@ typedef struct
 Taches tache[1000];
 int compt = 0;
 int NombreDeTaches = 0;
+int statutMenu;
 
 void Ajouter(void)
 {
-    int statutMenu;
     int N;
     tache[compt].id = 0;
 
@@ -47,7 +48,7 @@ void Ajouter(void)
         gets(tache[compt].description);
 
         printf("\n\t\t> Deadline:\n");
-        printf("\t\t\tEntrer Le jour:");
+        printf("\t\t\tEntrer Le jour: ");
         scanf("%d", &tache[compt].deadline.jour);
 
         printf("\t\t\tEntrer Le mois: ");
@@ -80,8 +81,22 @@ void Ajouter(void)
         NombreDeTaches++;
     }
 }
+int Deadline(int ind)
+{
+    /* time_t Horraire_Current = time(NULL);
+    struct tm dated;
+
+    dated.tm_mday = tache[ind].deadline.jour;
+    dated.tm_mon = tache[ind].deadline.mois - 1;
+    dated.tm_year = tache[ind].deadline.annee - 1900;
+
+    time_t dated = mktime(&deadline); */
+}
 void TrierAlphabet(void)
 {
+
+    Taches tritask;
+
     for (int i = 0; i < NombreDeTaches; i++)
     {
         for (int j = i + 1; j < NombreDeTaches; j++)
@@ -90,38 +105,14 @@ void TrierAlphabet(void)
             int result = strcmp(tache[i].titre, tache[j].titre);
             if (result > 0)
             {
-                int tempid = tache[j].id;
-                tache[j].id = tache[i].id;
-                tache[i].id = tempid;
 
-                char temptri[50];
-                strcpy(temptri, tache[j].titre);
-                strcpy(tache[j].titre, tache[i].titre);
-                strcpy(tache[i].titre, temptri);
-
-                strcpy(temptri, tache[j].description);
-                strcpy(tache[j].description, tache[i].description);
-                strcpy(tache[i].description, temptri);
-
-                strcpy(temptri, tache[j].status);
-                strcpy(tache[j].status, tache[i].status);
-                strcpy(tache[i].status, temptri);
-
-                tempid = tache[j].deadline.jour;
-                tache[j].deadline.jour = tache[i].deadline.jour;
-                tache[i].deadline.jour = tempid;
-
-                tempid = tache[j].deadline.mois;
-                tache[j].deadline.mois = tache[i].deadline.mois;
-                tache[i].deadline.mois = tempid;
-
-                tempid = tache[j].deadline.annee;
-                tache[j].deadline.annee = tache[i].deadline.annee;
-                tache[i].deadline.annee = tempid;
+                tritask = tache[j];
+                tache[j] = tache[i];
+                tache[i] = tritask;
             }
         }
     }
-    printf("\n\n\t\t\tLes taches trié d'orde alphabetique\n\n\n");
+    printf("\n\n\t\t\tLes taches triés d'orde alphabetique\n\n\n");
     printf("______________________________________________________________________________________________________________\n\n");
     printf("| Id |\n");
     printf("______________________________________________________________________________________________________________\n\n");
@@ -133,7 +124,6 @@ void TrierAlphabet(void)
         printf("______________________________________________________________________________________________________________\n\n");
     }
 }
-
 void Trier(void)
 {
     int trichoix;
@@ -167,6 +157,122 @@ void Afficher(void)
     }
 
     Trier();
+}
+void Modifier(void)
+{
+    int choixmodif, choix2;
+
+    printf("__________________________________________________________________________________________________\n\n");
+    printf("| Id |\n");
+    printf("__________________________________________________________________________________________________\n\n");
+
+    for (int i = 0; i < compt; i++)
+    {
+
+        printf("| %d | %20s | %20s\t| %20s\t| %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
+        printf("_________________________________________________________________________________________________\n\n");
+    }
+
+    printf("\n\n");
+    printf("\t\tChoisis l'id du task à modifier: ");
+    scanf("%d", &choixmodif);
+
+    for (int i = 0; i < NombreDeTaches; i++)
+    {
+        if (choixmodif == tache[i].id)
+        {
+            printf("\t\tEntrer votre choix à modifier.\n");
+            printf("\t\t\t.1. Modifier La description\n");
+            printf("\t\t\t.2. Modifier Le Statut\n");
+            printf("\t\t\t.3. Modifier Deadline\n");
+            scanf("%d", &choix2);
+
+            // Modification de description
+            if (choix2 == 1)
+            {
+                printf("Entrer Le texte: \n");
+                getchar();
+                gets(tache[i].description);
+            }
+            else if (choix2 == 2)
+            {
+
+                do
+                {
+                    printf("\n\t\t> Statut:\n");
+                    printf("\t\t\t.1. à realiser.\n");
+                    printf("\t\t\t.2. en cours.\n");
+                    printf("\t\t\t.3. finalisé\n");
+                    printf("\t\tEntrer Le nombre de votre choix: ");
+
+                    scanf("%d", &statutMenu);
+                    if (statutMenu == 1)
+                        strcpy(tache[i].status, "à realiser");
+                    else if (statutMenu == 2)
+                        strcpy(tache[i].status, "En cours");
+                    else if (statutMenu == 3)
+                        strcpy(tache[i].status, "finalisé");
+
+                    else
+                        printf("choix invalide!");
+
+                } while (statutMenu != 1 && statutMenu != 2 && statutMenu != 3);
+            }
+            else if (choix2 == 3)
+            {
+
+                printf("\n\t\t> Deadline:\n");
+                printf("\t\t\tEntrer Le jour: ");
+                scanf("%d", &tache[i].deadline.jour);
+
+                printf("\t\t\tEntrer Le mois: ");
+                scanf("%d", &tache[i].deadline.mois);
+
+                printf("\t\t\tEntrer L'annee: ");
+                scanf("%d", &tache[i].deadline.annee);
+            }
+        }
+    }
+}
+void Rechercher(void)
+{
+    int choixrech, choixid;
+    char rech[100];
+
+    printf("\t\tRechercher par:\n");
+    printf("\t\t\t.1. Id\n");
+    printf("\t\t\t.2. Titre\n");
+    scanf("%d", &choixrech);
+
+    if (choixrech == 1)
+    {
+        printf("Entrer l'id à rechercher:\n");
+        scanf("%d", &choixid);
+
+        for (int i = 0; i < NombreDeTaches; i++)
+        {
+            printf("__________________________________________________________________________________________________\n\n");
+            printf("| Id |\n");
+            printf("__________________________________________________________________________________________________\n\n");
+
+            if (choixid == tache[i].id)
+            {
+                printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
+                printf("_________________________________________________________________________________________________\n\n");
+            }
+        }
+    }
+    else if (choixrech == 2)
+    {
+        printf("Entrer le titre à rechercher:\n");
+        scanf("%s", rech);
+        for (int i = 0; i < NombreDeTaches; i++)
+        {
+            if (strcmp(rech, tache[i].titre) == 0)
+            {
+            }
+        }
+    }
 }
 int main(void)
 {
@@ -209,18 +315,21 @@ int main(void)
         case 2:
             Afficher();
             break;
-            /**  case 3:
-                  Modifier();
-                  break;
-              case 4:
+        case 3:
+            Modifier();
+            break;
+            /***  case 4:
                   Supprimer();
-                  break;
-              case 5:
-                  Rechercher();
-                  break;
-              case 6:
-                  Stats();
                   break; */
+        case 5:
+            Rechercher();
+            break;
+            /** case 6:
+                 Stats();
+                 break; */
+        case 0:
+            printf("Project SAS out!");
+            break;
         default:
             printf("Erreur! Choix invalide.\n");
             break;
