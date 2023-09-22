@@ -23,6 +23,7 @@ Taches tache[1000];
 int compt = 0;
 int NombreDeTaches = 0;
 int statutMenu;
+int RemainingDays[100];
 
 void Ajouter(void)
 {
@@ -81,17 +82,6 @@ void Ajouter(void)
         NombreDeTaches++;
     }
 }
-int Deadline(int ind)
-{
-    /* time_t Horraire_Current = time(NULL);
-    struct tm dated;
-
-    dated.tm_mday = tache[ind].deadline.jour;
-    dated.tm_mon = tache[ind].deadline.mois - 1;
-    dated.tm_year = tache[ind].deadline.annee - 1900;
-
-    time_t dated = mktime(&deadline); */
-}
 void TrierAlphabet(void)
 {
 
@@ -123,6 +113,48 @@ void TrierAlphabet(void)
         printf("______________________________________________________________________________________________________________\n\n");
     }
 }
+void TrierDeadline(void)
+{
+    Taches trideadln;
+
+    int daysResult, monthResult, yearResult;
+
+    time_t t = time(NULL);
+    struct tm datenow = *localtime(&t);
+    for (int i = 0; i < compt; i++)
+    {
+        daysResult = tache[i].deadline.jour - datenow.tm_mday;
+        monthResult = tache[i].deadline.mois - (datenow.tm_mon + 1);
+        yearResult = tache[i].deadline.annee - (datenow.tm_year + 1900);
+
+        RemainingDays[i] = daysResult + (monthResult * 30) + (yearResult * 365);
+    }
+
+    for (int i = 0; i < compt; i++)
+    {
+        for (int j = i + 1; j < compt; j++)
+        {
+            if (RemainingDays[i] > RemainingDays[j])
+            {
+                trideadln = tache[j];
+                tache[j] = tache[i];
+                tache[i] = trideadln;
+            }
+        }
+    }
+    printf("\n\n\t\t\tLes taches triés Par Deadline\n\n\n");
+    printf("______________________________________________________________________________________________________________\n\n");
+    printf("| Id |\n");
+    printf("______________________________________________________________________________________________________________\n\n");
+
+    for (int i = 0; i < compt; i++)
+    {
+
+        printf("| %d | %30s\t | %30s \t| %30s\t | %d/%d/%d | %d jours |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee, RemainingDays[i]);
+        printf("______________________________________________________________________________________________________________\n\n");
+    }
+}
+
 void Trier(void)
 {
     int trichoix;
@@ -138,6 +170,10 @@ void Trier(void)
         if (trichoix == 1)
         {
             TrierAlphabet();
+        }
+        else if (trichoix == 2)
+        {
+            TrierDeadline();
         }
 
     } while (trichoix != 1 && trichoix != 2 && trichoix != 3);
@@ -289,9 +325,9 @@ void Rechercher(void)
             if (choixid == tache[i].id)
             {
                 printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
-                printf("_________________________________________________________________________________________________\n\n");
             }
         }
+        printf("_________________________________________________________________________________________________\n\n");
     }
     else if (choixrech == 2)
     {
@@ -300,15 +336,16 @@ void Rechercher(void)
         printf("__________________________________________________________________________________________________\n\n");
         printf("| Id |\n");
         printf("__________________________________________________________________________________________________\n\n");
+
         for (int i = 0; i < NombreDeTaches; i++)
         {
 
             if (strcmp(rech, tache[i].titre) == 0)
             {
                 printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
-                printf("_________________________________________________________________________________________________\n\n");
             }
         }
+        printf("_________________________________________________________________________________________________\n\n");
     }
 }
 void Supprimer(void)
@@ -323,8 +360,8 @@ void Supprimer(void)
     {
 
         printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
-        printf("_________________________________________________________________________________________________\n\n");
     }
+    printf("_________________________________________________________________________________________________\n\n");
 
     printf("Entrer l'id à supprimer: \n");
     scanf("%d", &choixid);
@@ -357,8 +394,8 @@ void Supprimer(void)
     {
 
         printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
-        printf("_________________________________________________________________________________________________\n\n");
     }
+    printf("_________________________________________________________________________________________________\n\n");
 }
 void Stats(void)
 {
