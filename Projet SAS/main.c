@@ -7,6 +7,7 @@ typedef struct
     int jour;
     int mois;
     int annee;
+    int RemainingDays;
 } Date;
 
 typedef struct
@@ -23,7 +24,6 @@ Taches tache[1000];
 int compt = 0;
 int NombreDeTaches = 0;
 int statutMenu;
-int RemainingDays[100];
 
 void Ajouter(void)
 {
@@ -80,6 +80,23 @@ void Ajouter(void)
 
         compt++;
         NombreDeTaches++;
+
+        Taches trideadln;
+
+        int daysResult, monthResult, yearResult;
+    }
+    time_t t = time(NULL);
+    struct tm datenow = *localtime(&t);
+
+    int daysResult, monthResult, yearResult;
+
+    for (int i = 0; i < compt; i++)
+    {
+        daysResult = tache[i].deadline.jour - datenow.tm_mday;
+        monthResult = tache[i].deadline.mois - (datenow.tm_mon + 1);
+        yearResult = tache[i].deadline.annee - (datenow.tm_year + 1900);
+
+        tache[i].deadline.RemainingDays = daysResult + (monthResult * 30) + (yearResult * 365);
     }
 }
 void TrierAlphabet(void)
@@ -127,14 +144,14 @@ void TrierDeadline(void)
         monthResult = tache[i].deadline.mois - (datenow.tm_mon + 1);
         yearResult = tache[i].deadline.annee - (datenow.tm_year + 1900);
 
-        RemainingDays[i] = daysResult + (monthResult * 30) + (yearResult * 365);
+        tache[i].deadline.RemainingDays = daysResult + (monthResult * 30) + (yearResult * 365);
     }
 
     for (int i = 0; i < compt; i++)
     {
         for (int j = i + 1; j < compt; j++)
         {
-            if (RemainingDays[i] > RemainingDays[j])
+            if (tache[i].deadline.RemainingDays > tache[j].deadline.RemainingDays)
             {
                 trideadln = tache[j];
                 tache[j] = tache[i];
@@ -150,11 +167,25 @@ void TrierDeadline(void)
     for (int i = 0; i < compt; i++)
     {
 
-        printf("| %d | %30s\t | %30s \t| %30s\t | %d/%d/%d | %d jours |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee, RemainingDays[i]);
+        printf("| %d | %30s\t | %20s \t| %20s | %d/%d/%d | %d jours |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee, tache[i].deadline.RemainingDays);
         printf("______________________________________________________________________________________________________________\n\n");
     }
 }
-
+void ThreeDeadline(void)
+{
+    for (int i = 0; i < compt; i++)
+    {
+        if (tache[i].deadline.RemainingDays <= 3)
+        {
+            printf("| %d | %20s | %20s\t | %20s | %d/%d/%d | %d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee, tache[i].deadline.RemainingDays);
+            printf("_________________________________________________________________________________________________\n\n");
+        }
+        else
+        {
+            printf("\t\tAucune tache <= 3 jours\n");
+        }
+    }
+}
 void Trier(void)
 {
     int trichoix;
@@ -174,6 +205,10 @@ void Trier(void)
         else if (trichoix == 2)
         {
             TrierDeadline();
+        }
+        else if (trichoix == 3)
+        {
+            ThreeDeadline();
         }
 
     } while (trichoix != 1 && trichoix != 2 && trichoix != 3);
@@ -289,6 +324,19 @@ void Modifier(void)
             }
         }
     }
+    time_t t = time(NULL);
+    struct tm datenow = *localtime(&t);
+
+    int daysResult, monthResult, yearResult;
+
+    for (int i = 0; i < compt; i++)
+    {
+        daysResult = tache[i].deadline.jour - datenow.tm_mday;
+        monthResult = tache[i].deadline.mois - (datenow.tm_mon + 1);
+        yearResult = tache[i].deadline.annee - (datenow.tm_year + 1900);
+
+        tache[i].deadline.RemainingDays = daysResult + (monthResult * 30) + (yearResult * 365);
+    }
 }
 void Rechercher(void)
 {
@@ -359,7 +407,7 @@ void Supprimer(void)
     for (int i = 0; i < compt; i++)
     {
 
-        printf("| %d | %20s | %20s| %20s | %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
+        printf("| %d | %20s | %20s \t| %20s \t| %d/%d/%d |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.jour, tache[i].deadline.mois, tache[i].deadline.annee);
     }
     printf("_________________________________________________________________________________________________\n\n");
 
@@ -402,7 +450,8 @@ void Stats(void)
     // counter finished /unfinished
     int statsC = 0;
 
-    printf("\t\t\t***STATISTIQUES***\n\n");
+    printf("\n\n\n\n");
+    printf("\t\t\t***STATISTIQUES***\n\n\n");
     printf("\t> Nombre Total des Taches: %d\n\n", NombreDeTaches);
     printf("\t> Statut des Taches\n");
 
@@ -410,16 +459,23 @@ void Stats(void)
     {
         int OuiNon = strcmp(tache[i].status, "finalisé");
 
-        if (OuiNon = 0)
+        if (OuiNon == 0)
         {
             statsC++;
         }
     }
-    int complete = statsC + 1;
+    int complete = statsC;
 
     printf("\t\t* %d Taches completes.\n", complete);
-    printf("\n");
-    printf("\t\t* %d Taches imcompletes.\n", NombreDeTaches - complete);
+    printf("\n\n");
+    printf("\t\t* %d Taches imcompletes.\n\n\n\n", NombreDeTaches - complete);
+
+    for (int i = 0; i < compt; i++)
+    {
+
+        printf("| %d | %20s | %20s\t | %20s | %d jours |\n", tache[i].id, tache[i].titre, tache[i].description, tache[i].status, tache[i].deadline.RemainingDays);
+        printf("_________________________________________________________________________________________________\n\n");
+    }
 }
 int main(void)
 {
