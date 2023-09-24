@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <conio.h>
 
 typedef struct
 {
@@ -27,11 +26,12 @@ Taches tache[1000];
 int compt = 0;
 int NombreDeTaches = 0;
 int statutMenu;
+int id = 0;
 
 void Ajouter(void)
 {
     int N;
-    tache[compt].id = 0;
+    tache[compt].id = id;
 
     // Prendre le nombre de task à ajouter
     printf("\n\n");
@@ -114,6 +114,7 @@ void Ajouter(void)
 
         compt++;
         NombreDeTaches++;
+        id++;
 
         Taches trideadln;
 
